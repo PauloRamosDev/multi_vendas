@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multivendas/HomePage.dart';
 import 'package:multivendas/menu_principal.dart';
 
 void main() {

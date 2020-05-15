@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 
 class MyBottombar extends StatefulWidget {
-  int index;
+  final int initialIndex;
+  final Function(int) currentIndex;
 
-  MyBottombar({this.index = 0});
+  MyBottombar({this.initialIndex = 0, this.currentIndex});
 
   @override
   _MyBottombarState createState() => _MyBottombarState();
 }
 
 class _MyBottombarState extends State<MyBottombar> {
+  var _index;
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        currentIndex: widget.index,
+        currentIndex: _index == null ? widget.initialIndex : _index,
         onTap: (index) {
           setState(() {
-            widget.index = index;
+            _index = index;
+            widget.currentIndex(index);
           });
         },
         showUnselectedLabels: false,
