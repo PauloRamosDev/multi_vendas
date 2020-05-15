@@ -11,6 +11,8 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  int category = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,19 +21,21 @@ class _MenuState extends State<Menu> {
         title: Text('Bem vindo, Paulo'),
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => DetalhesProduto()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => DetalhesProduto()));
       }),
       bottomNavigationBar: MyBottombar(),
       body: Column(
         children: <Widget>[
           //pesquisa
           Container(
+            clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20)),
-                color: Colors.blue),
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+              color: Colors.blue,
+            ),
             height: 80,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 25, left: 16, right: 16),
@@ -51,6 +55,15 @@ class _MenuState extends State<Menu> {
   }
 
   ListView buildListView() {
+    var listCategorias = [
+      'Mercearia',
+      'Bebidas',
+      'Perfumaria',
+      'Limpeza',
+      'Bazar',
+      'Pet'
+    ];
+
     return ListView(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
@@ -59,16 +72,21 @@ class _MenuState extends State<Menu> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(
-              6,
-                  (index) =>
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CardCategories(
-                      label: 'Categoria',
-                      select: true,
-                    ),
-                  ),
-            ),
+                listCategorias.length,
+                (index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            category = index;
+                          });
+                        },
+                        child: CardCategories(
+                          label: listCategorias[index],
+                          select: index == category,
+                        ),
+                      ),
+                )),
           ),
         ),
         //Destaques
@@ -93,8 +111,7 @@ class _MenuState extends State<Menu> {
                 child: Row(
                   children: List.generate(
                       3,
-                          (index) =>
-                          Padding(
+                      (index) => Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               height: 200,
